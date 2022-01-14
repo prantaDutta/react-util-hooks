@@ -1,7 +1,7 @@
 import { DependencyList, EffectCallback, useEffect } from 'react'
-import useIsFirstRender from './useIsFirstRender'
+import { useIsFirstRender } from './useIsFirstRender'
 
-function useUpdateEffect(effect: EffectCallback, deps?: DependencyList) {
+export function useUpdateEffect(effect: EffectCallback, deps?: DependencyList) {
   const isFirst = useIsFirstRender()
 
   useEffect(() => {
@@ -10,5 +10,3 @@ function useUpdateEffect(effect: EffectCallback, deps?: DependencyList) {
     }
   }, deps)
 }
-
-export default useUpdateEffect
