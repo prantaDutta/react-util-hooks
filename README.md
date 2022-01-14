@@ -214,7 +214,7 @@ This simple React hook offers you a click event listener at the page level, don'
 
 ```typescript jsx
     import React, { useState } from 'react'
-    import { useClickAnyWhere } from 'usehooks-ts'
+    import { useClickAnyWhere } from 'react-util-hooks'
     
     export default function Component() {
       const [count, setCount] = useState(0)
@@ -532,7 +532,7 @@ This hook returns true at mount time and false after that
 
 ```typescript jsx
     import React, { useEffect, useState } from 'react'
-    import { useIsFirstRender } from 'usehooks-ts'
+    import { useIsFirstRender } from 'react-util-hooks'
     
     export default function Component() {
         const isFirst = useIsFirstRender()
@@ -951,7 +951,7 @@ This hook is just the modified version of useEffect that is skipping the first r
 
 ```typescript jsx
     import React, { useEffect, useState } from 'react'
-    import { useUpdateEffect } from 'usehooks-ts'
+    import { useUpdateEffect } from 'react-util-hooks'
     
     export default function Component() {
       const [data, setData] = useState<number>(0)
