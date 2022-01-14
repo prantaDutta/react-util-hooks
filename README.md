@@ -50,6 +50,7 @@ yarn add react-util-hooks
 - [useBoolean](#useboolean)
 - [useCopyToClipboard](#usecopytoclipboard)
 - [useCounter](#usecounter)
+- [useClickAnyWhere](#useclickanywhere)
 - [useDarkMode](#usedarkmode)
 - [useDebounce](#usedebounce)
 - [useElementSize](#useelementsize)
@@ -60,6 +61,7 @@ yarn add react-util-hooks
 - [useIntersectionObserver](#useintersectionobserver)
 - [useInterval](#useinterval)
 - [useIsClient](#useisclient)
+- [useIsFirstRender](#useisfirstrender)
 - [useKeyPress](#usekeypress)
 - [useLocalStorage](#uselocalstorage)
 - [useLockedBody](#uselockedbody)
@@ -70,12 +72,13 @@ yarn add react-util-hooks
 - [useReadLocalStorage](#usereadlocalstorage)
 - [useScreen](#usescreen)
 - [useScript](#usescript)
+- [useSessionStorage](#usesessionstorage)
+- [useSessionStorageWithObject](#usesessionstoragewithobject)
+- [useSsr](#usessr)
 - [useTimeout](#usetimeout)
 - [useToggle](#usetoggle)
+- [useUpdateEffect](#useupdateeffect)
 - [useWindowSize](#usewindowsize)
-- [useSessionStorage](#usesessionstorage)
-- [useSsr](#usessr)
-- [useSessionStorageWithObject](#usesessionstoragewithobject)
 
 ## Usage
 
@@ -202,6 +205,25 @@ A simple abstraction to play with a counter, don't repeat yourself.
           <button onClick={multiplyBy2}>Multiply by 2</button>
         </>
       )
+    }
+```
+
+### useClickAnyWhere
+
+This simple React hook offers you a click event listener at the page level, don't repeat yourself.
+
+```typescript jsx
+    import React, { useState } from 'react'
+    import { useClickAnyWhere } from 'usehooks-ts'
+    
+    export default function Component() {
+      const [count, setCount] = useState(0)
+    
+      useClickAnyWhere(() => {
+        setCount(prev => prev + 1)
+      })
+    
+      return <p>Click count: {count}</p>
     }
 ```
 
@@ -491,7 +513,7 @@ the [Dan Abramov's blog post](https://overreacted.io/making-setinterval-declarat
 
 ### useIsClient
 
-this react hook is very simple but it is useful. Indeed, if you manually do a typeof window! ==" undefined " type check,
+This react hook is very simple but it is useful. Indeed, if you manually do a typeof window! ==" undefined " type check,
 then your function will be escaped, but it will stop there. Thanks to this hook, there will be a first render where
 isClient will be false, then when the window is ready, the useEffect will be executed, will update the value of isClient
 and restart your component with the window defined.
@@ -501,6 +523,32 @@ and restart your component with the window defined.
         const isClient = useIsClient()
     
         return <div>{isClient ? 'Client' : 'server'}</div>
+    }
+```
+
+### useIsFirstRender
+
+This hook returns true at mount time and false after that
+
+```typescript jsx
+    import React, { useEffect, useState } from 'react'
+    import { useIsFirstRender } from 'usehooks-ts'
+    
+    export default function Component() {
+        const isFirst = useIsFirstRender()
+        const [data, setData] = useState<number>(0)
+    
+        useEffect(() => {
+            console.log('Normal useEffect', { data })
+        }, [data])
+    
+        return (
+            <div>
+                <p>Open your console</p>
+                <p>Is first render: {isFirst ? 'yes' : 'no'}</p>
+                <button onClick={() => setData(Date.now())}>Update data</button>
+            </div>
+        )
     }
 ```
 
@@ -894,6 +942,33 @@ it. It also parses the data when fetching from the browser, so you can use it li
                 </div>
             </div>
         );
+    }
+```
+
+### useUpdateEffect
+
+This hook is just the modified version of useEffect that is skipping the first render.
+
+```typescript jsx
+    import React, { useEffect, useState } from 'react'
+    import { useUpdateEffect } from 'usehooks-ts'
+    
+    export default function Component() {
+      const [data, setData] = useState<number>(0)
+      useEffect(() => {
+        console.log('Normal useEffect', { data })
+      }, [data])
+    
+      useUpdateEffect(() => {
+        console.log('Update useEffect only', { data })
+      }, [data])
+    
+      return (
+        <div>
+          <p>Open your console</p>
+          <button onClick={() => setData(Date.now())}>Update data</button>
+        </div>
+      )
     }
 ```
 
